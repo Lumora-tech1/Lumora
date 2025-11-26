@@ -1,0 +1,238 @@
+/* ===========================
+   VARIABLES / THEME
+   =========================== */
+:root{
+  --bg1: #d16a6a;
+  --bg2: #f4e03f;
+  --bg3: #25a43f;
+  --muted: rgba(255,255,255,0.08);
+  --card-bg: rgba(255,255,255,0.97);
+  --accent: #7b1fa2;
+  --wa: #25D366;
+  --text-dark: #222;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  color:#fff;
+  min-height:100vh;
+  position:relative;
+  overflow-x:hidden;
+  background: radial-gradient(circle at 25% 25%, var(--bg1), var(--bg2), var(--bg3), #222);
+  background-size: 300% 300%;
+  animation: colorExplosion 60s ease-in-out infinite;
+}
+@keyframes colorExplosion{
+  0% { background-position: 20% 20%}
+  50% { background-position: 80% 80%}
+  100% { background-position: 20% 20%}
+}
+
+/* poudre + voile */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:url("https://i.imgur.com/0Z8FQpB.png") repeat;
+  mix-blend-mode:screen;
+  opacity:0.12;
+  pointer-events:none;
+  z-index:0;
+}
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  backdrop-filter:blur(10px);
+  background:rgba(255,255,255,0.03);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ===========================
+   LAYOUT
+   =========================== */
+.wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:20px;}
+header.site-header{
+  display:flex;align-items:center;gap:16px;justify-content:space-between;
+  padding:18px 10px;border-radius:12px;margin-top:8px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.05));
+  box-shadow:0 6px 20px rgba(0,0,0,0.12);
+}
+.brand{
+  display:flex;align-items:center;gap:12px;
+}
+.brand .logo{
+  width:56px;height:56px;border-radius:10px;object-fit:cover;border:2px solid rgba(255,255,255,0.12);
+}
+.lumora-logo{
+  font-weight:900;font-size:1.35rem;letter-spacing:1px;
+  background:linear-gradient(90deg,#FF4E50,#FC913A,#F9D423);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  text-transform:uppercase;
+  display:inline-block;
+}
+.lumora-sub{font-size:0.85rem;color:rgba(255,255,255,0.9);margin-top:2px}
+.header-actions{display:flex;gap:10px;align-items:center}
+.search-input{
+  display:flex;align-items:center;background:rgba(255,255,255,0.08);padding:8px;border-radius:10px;
+}
+.search-input input{background:transparent;border:0;color:#fff;outline:none;width:220px;padding:6px}
+.icon-btn{background:rgba(255,255,255,0.06);border:0;color:#fff;padding:8px;border-radius:10px;cursor:pointer}
+.icon-btn:hover{transform:scale(1.04)}
+.badge{background:#ff4757;color:#fff;padding:4px 7px;border-radius:999px;font-weight:700;font-size:0.8rem;margin-left:6px}
+
+/* ===========================
+   SLIDER PROMO
+   =========================== */
+.promo-slider{margin-top:16px;border-radius:12px;overflow:hidden;position:relative}
+.slides{display:flex;transition:transform .6s cubic-bezier(.2,.9,.3,1);gap:0}
+.slide{min-width:100%;display:flex;align-items:center;justify-content:space-between;padding:24px;background:linear-gradient(90deg, rgba(0,0,0,0.18), rgba(0,0,0,0.06));}
+.slide .promo-text{max-width:60%}
+.slide h2{font-size:1.4rem;margin:0 0 8px 0}
+.slide p{margin:0;color:rgba(255,255,255,0.9)}
+.slide .promo-cta{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+.slider-controls{position:absolute;inset:auto 12px 12px 12px;display:flex;justify-content:space-between;pointer-events:none}
+.slider-controls button{pointer-events:all;background:rgba(0,0,0,0.35);border:0;color:#fff;padding:6px 10px;border-radius:8px;cursor:pointer}
+
+/* ===========================
+   CATEGORIES
+   =========================== */
+.filters{display:flex;gap:8px;margin:18px 0;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,0.08);padding:8px 12px;border-radius:999px;color:#fff;cursor:pointer;font-weight:600}
+.chip.active{background:rgba(255,255,255,0.95);color:var(--text-dark)}
+
+/* ===========================
+   PRODUCTS GRID
+   =========================== */
+.product-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:28px;
+}
+.card{
+  background:var(--card-bg);color:var(--text-dark);border-radius:12px;overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.12);display:flex;flex-direction:column;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,0.18)}
+.card-image{position:relative;padding-top:72%;background:#f6f6f6}
+.card-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:transform .45s}
+.card:hover .card-image img{transform:scale(1.12)}
+.card-body{padding:12px;display:flex;flex-direction:column;gap:8px}
+.product-title{font-weight:700;font-size:0.95rem}
+.product-price{font-weight:800;color:var(--accent);font-size:1.02rem}
+.card-actions{display:flex;gap:8px;margin-top:8px}
+.btn{flex:1;padding:9px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+.btn-quick{background:rgba(0,0,0,0.06)}
+.btn-whatsapp{background:var(--wa);color:#fff}
+.fav-btn{background:transparent;border:0;cursor:pointer;font-size:1.1rem}
+
+/* ===========================
+   PANIER / FAV MODALS
+   =========================== */
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.6);
+  z-index:9999;
+  padding:20px;
+}
+.modal.active{display:flex}
+.modal-card{
+  background:#fff;
+  color:#111;
+  max-width:800px;
+  width:100%;
+  border-radius:12px;
+  padding:18px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.3);
+}
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.close{
+  background:transparent;
+  border:0;
+  font-size:1.6rem;
+  cursor:pointer;
+}
+.cart-list{
+  margin-top:12px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  max-height:420px;
+  overflow:auto;
+  padding-right:6px;
+}
+.cart-item{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.cart-item img{
+  width:64px;
+  height:64px;
+  object-fit:cover;
+  border-radius:8px;
+}
+.modal .chip{
+  background:#f0f0f0;
+  color:#111;
+  font-weight:600;
+  border-radius:999px;
+  cursor:pointer;
+  padding:8px 12px;
+}
+.modal .chip:hover{
+  background:#e0e0e0;
+}
+
+/* ===========================
+   LIGHTBOX
+   =========================== */
+.lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);z-index:99999;padding:20px}
+.lightbox.active{display:flex}
+.lightbox img{max-width:95%;max-height:95%;border-radius:12px;box-shadow:0 40px 80px rgba(0,0,0,0.6)}
+.lightbox .nav{position:fixed;top:50%;transform:translateY(-50%);font-size:2rem;color:#fff;border:0;background:transparent;cursor:pointer;padding:10px}
+.lightbox .prev{left:18px}
+.lightbox .next{right:18px}
+.lightbox .close-lb{position:fixed;right:28px;top:18px;font-size:2rem;color:#fff;border:0;background:transparent;cursor:pointer}
+
+/* ===========================
+   TOAST
+   =========================== */
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:26px;background:#111;color:#fff;padding:10px 14px;border-radius:10px;display:none;z-index:999999}
+.toast.show{display:block;animation:toastIn .4s}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+
+/* ===========================
+   FOOTER
+   =========================== */
+footer.site-footer{margin:26px 0 60px;background:rgba(255,255,255,0.06);padding:14px;border-radius:10px;text-align:center;color:#fff}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+@media (max-width:700px){
+  .brand .lumora-logo{font-size:1.05rem}
+  .slide .promo-text{max-width:100%}
+}
+
+/* ===========================
+   DARK MODE
+   =========================== */
+body.dark{
+  background: radial-gradient(circle at 25% 25%, #0f1724, #081226, #06311b, #020202);
+}
+body.dark .card{background:#081226;color:#d6e6dc}
+body.dark .modal-card{background:#0b1220;color:#d6e6dc}
+body.dark .lumora-sub{color:rgba(255,255,255,0.7)}
+body.dark .chip.active{background: #e2b864;color:#081226}
