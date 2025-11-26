@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lumora — Boutique</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===========================
+       THEME / BACKGROUND ANIMÉ
+   =========================== */
+:root{
+  --bg1: #d16a6a; /* rouge */
+  --bg2: #f4e03f; /* jaune */
+  --bg3: #25a43f; /* vert */
+  --muted: rgba(255,255,255,0.08);
+  --card-bg: rgba(255,255,255,0.97);
+  --accent: #7b1fa2;
+  --wa: #25D366;
+  --text-dark: #222;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+
+  /* Fond radial animé */
+  background: radial-gradient(circle at 30% 30%, #d16a6a, #e6d89f, #88b89f, #222222);
+  background-size: 200% 200%;
+  animation: slowExplosion 40s ease-in-out infinite;
+}
+
+/* Animation du gradient */
+@keyframes slowExplosion {
+  0% { background-position: 25% 25%; }
+  50% { background-position: 75% 75%; }
+  100% { background-position: 25% 25%; }
+}
+
+/* Poudre subtile (texture) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("https://i.imgur.com/0Z8FQpB.png");
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: screen;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Voile flou */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+  z-index: 0;
+}
+
+    /* ===========================
+       LAYOUT
+       =========================== */
+    .wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:20px;}
+    header.site-header{
+      display:flex;align-items:center;gap:16px;justify-content:space-between;
+      padding:18px 10px;border-radius:12px;margin-top:8px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.05));
+      box-shadow:0 6px 20px rgba(0,0,0,0.12);
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;
+    }
+    .brand .logo{
+      width:56px;height:56px;border-radius:10px;object-fit:cover;border:2px solid rgba(255,255,255,0.12);
+    }
+
+    /* Lumora stylé */
+    .lumora-logo{
+      font-weight:900;font-size:1.35rem;letter-spacing:1px;
+      background:linear-gradient(90deg,#FF4E50,#FC913A,#F9D423);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      text-transform:uppercase;
+      display:inline-block;
+    }
+    .lumora-sub{font-size:0.85rem;color:rgba(255,255,255,0.9);margin-top:2px}
+
+    /* header actions */
+    .header-actions{display:flex;gap:10px;align-items:center}
+    .search-input{
+      display:flex;align-items:center;background:rgba(255,255,255,0.08);padding:8px;border-radius:10px;
+    }
+    .search-input input{background:transparent;border:0;color:#fff;outline:none;width:220px;padding:6px}
+    .icon-btn{background:rgba(255,255,255,0.06);border:0;color:#fff;padding:8px;border-radius:10px;cursor:pointer}
+    .icon-btn:hover{transform:scale(1.04)}
+
+    /* cart & fav badge */
+    .badge{background:#ff4757;color:#fff;padding:4px 7px;border-radius:999px;font-weight:700;font-size:0.8rem;margin-left:6px}
+
+    /* ===========================
+       SLIDER PROMO
+       =========================== */
+    .promo-slider{margin-top:16px;border-radius:12px;overflow:hidden;position:relative}
+    .slides{display:flex;transition:transform .6s cubic-bezier(.2,.9,.3,1);gap:0}
+    .slide{min-width:100%;display:flex;align-items:center;justify-content:space-between;padding:24px;background:linear-gradient(90deg, rgba(0,0,0,0.18), rgba(0,0,0,0.06));}
+    .slide .promo-text{max-width:60%}
+    .slide h2{font-size:1.4rem;margin:0 0 8px 0}
+    .slide p{margin:0;color:rgba(255,255,255,0.9)}
+    .slide .promo-cta{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+    .slider-controls{position:absolute;inset:auto 12px 12px 12px;display:flex;justify-content:space-between;pointer-events:none}
+    .slider-controls button{pointer-events:all;background:rgba(0,0,0,0.35);border:0;color:#fff;padding:6px 10px;border-radius:8px;cursor:pointer}
+
+    /* ===========================
+       CATEGORIES
+       =========================== */
+    .filters{display:flex;gap:8px;margin:18px 0;flex-wrap:wrap}
+    .chip{background:rgba(255,255,255,0.08);padding:8px 12px;border-radius:999px;color:#fff;cursor:pointer;font-weight:600}
+    .chip.active{background:rgba(255,255,255,0.95);color:var(--text-dark)}
+
+    /* ===========================
+       PRODUCTS GRID
+       =========================== */
+    .product-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:28px;
+    }
+    .card{
+      background:var(--card-bg);color:var(--text-dark);border-radius:12px;overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,0.12);display:flex;flex-direction:column;
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,0.18)}
+    .card-image{position:relative;padding-top:72%;background:#f6f6f6}
+    .card-image img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:transform .45s}
+    .card:hover .card-image img{transform:scale(1.12)}
+    .card-body{padding:12px;display:flex;flex-direction:column;gap:8px}
+    .product-title{font-weight:700;font-size:0.95rem}
+    .product-price{font-weight:800;color:var(--accent);font-size:1.02rem}
+    .card-actions{display:flex;gap:8px;margin-top:8px}
+    .btn{flex:1;padding:9px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+    .btn-quick{background:rgba(0,0,0,0.06)}
+    .btn-whatsapp{background:var(--wa);color:#fff}
+
+    /* fav heart */
+    .fav-btn{background:transparent;border:0;cursor:pointer;font-size:1.1rem}
+
+   /* ===========================
+   PANIER / FAV MODALS
+   =========================== */
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.6);
+  z-index:9999;
+  padding:20px;
+}
+.modal.active{display:flex}
+.modal-card{
+  background:#fff;
+  color:#111;
+  max-width:800px;
+  width:100%;
+  border-radius:12px;
+  padding:18px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.3);
+}
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.close{
+  background:transparent;
+  border:0;
+  font-size:1.6rem;
+  cursor:pointer;
+}
+.cart-list{
+  margin-top:12px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  max-height:420px;
+  overflow:auto;
+  padding-right:6px;
+}
+.cart-item{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.cart-item img{
+  width:64px;
+  height:64px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+/* ===========================
+   Boutons visibles dans les modales panier/favoris
+   =========================== */
+.modal .chip {
+  background: #f0f0f0;   /* gris clair pour contraste */
+  color: #111;            /* texte sombre */
+  font-weight:600;
+  border-radius: 999px;
+  cursor: pointer;
+  padding:8px 12px;
+}
+
+.modal .chip:hover {
+  background: #e0e0e0;    /* léger effet hover */
+}
+
+    /* ===========================
+       LIGHTBOX (image agrandie)
+       =========================== */
+    .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);z-index:99999;padding:20px}
+    .lightbox.active{display:flex}
+    .lightbox img{max-width:95%;max-height:95%;border-radius:12px;box-shadow:0 40px 80px rgba(0,0,0,0.6)}
+    .lightbox .nav{position:fixed;top:50%;transform:translateY(-50%);font-size:2rem;color:#fff;border:0;background:transparent;cursor:pointer;padding:10px}
+    .lightbox .prev{left:18px}
+    .lightbox .next{right:18px}
+    .lightbox .close-lb{position:fixed;right:28px;top:18px;font-size:2rem;color:#fff;border:0;background:transparent;cursor:pointer}
+
+    /* ===========================
+       TOAST
+       =========================== */
+    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:26px;background:#111;color:#fff;padding:10px 14px;border-radius:10px;display:none;z-index:999999}
+    .toast.show{display:block;animation:toastIn .4s}
+    @keyframes toastIn{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+
+    /* ===========================
+       FOOTER
+       =========================== */
+    footer.site-footer{margin:26px 0 60px;background:rgba(255,255,255,0.06);padding:14px;border-radius:10px;text-align:center;color:#fff}
+
+    /* responsive tweaks */
+    @media (max-width:700px){
+      .brand .lumora-logo{font-size:1.05rem}
+      .slide .promo-text{max-width:100%}
+    }
+
+    /* DARK MODE (class .dark on body) */
+    body.dark{
+      background: radial-gradient(circle at 25% 25%, #0f1724, #081226, #06311b, #020202);
+    }
+    body.dark .card{background:#081226;color:#d6e6dc}
+    body.dark .modal-card{background:#0b1220;color:#d6e6dc}
+    body.dark .lumora-sub{color:rgba(255,255,255,0.7)}
+    body.dark .chip.active{background: #e2b864;color:#081226}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- HEADER -->
+    <header class="site-header" role="banner">
+      <div class="brand">
+        <img class="logo" src="https://i.postimg.cc/FsDmJd57/Gemini-Generated-Image-xydpjtxydpjtxydp.png" alt="Logo Lumora">
+        <div>
+          <div class="lumora-logo">Lumora</div>
+          <div class="lumora-sub">Produits innovants • Livraison BF</div>
+        </div>
+      </div>
+
+      <div class="header-actions" role="navigation" aria-label="menu">
+        <div class="search-input" title="Rechercher produit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.9"><path d="M21 21l-4.35-4.35" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#fff" stroke-width="1.6"/></svg>
+          <input id="search" placeholder="Rechercher..." aria-label="Rechercher produit">
+        </div>
+
+        <button class="icon-btn" id="toggle-theme" title="Mode sombre / clair">🌙</button>
+
+        <button class="icon-btn" id="open-favs" title="Favoris">❤️ <span id="fav-count" class="badge">0</span></button>
+
+        <button class="icon-btn" id="open-cart" title="Panier">🛒 <span id="cart-count" class="badge">0</span></button>
+      </div>
+    </header>
+
+    <!-- PROMO SLIDER -->
+    <section class="promo-slider" aria-label="Promotions">
+      <div class="slides" id="slides">
+        <div class="slide">
+          <div class="promo-text">
+            <h2>Offre du jour — Remise 15%</h2>
+            <p>Gourde Mixeur Portable — Livraison gratuite aujourd'hui au Burkina Faso.</p>
+            <a class="promo-cta" href="#grid-produits">Voir l'offre</a>
+          </div>
+          <div class="promo-visual">
+            <img src="https://i.postimg.cc/HkFyXvjq/Gemini-Generated-Image-fbysrwfbysrwfbys.png" alt="Promo" style="height:120px;object-fit:contain">
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="promo-text">
+            <h2>Nouveautés Lumora</h2>
+            <p>Écouteurs sans fil et accessoires pour la maison — qualité premium.</p>
+            <a class="promo-cta" href="#grid-produits">Découvrir</a>
+          </div>
+          <div class="promo-visual">
+            <img src="https://i.postimg.cc/Z5zxrQGS/Gemini-Generated-Image-do7btcdo7btcdo7b.png" alt="Promo 2" style="height:120px;object-fit:contain">
+          </div>
+        </div>
+      </div>
+
+      <div class="slider-controls" aria-hidden="true">
+        <button id="prev-slide">◀</button>
+        <button id="next-slide">▶</button>
+      </div>
+    </section>
+
+    <!-- FILTERS -->
+    <div class="filters" id="filters">
+      <div class="chip active" data-cat="all">Tous</div>
+      <div class="chip" data-cat="gourde">Gourdes</div>
+      <div class="chip" data-cat="audio">Audio</div>
+      <div class="chip" data-cat="pc">Informatique</div>
+      <div class="chip" data-cat="bem">Bien-être</div>
+      <div class="chip" data-cat="autre">Autre</div>
+    </div>
+
+    <!-- ACTIONS BAR -->
+    <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="color:rgba(255,255,255,0.95);font-weight:700">Résultats : <span id="result-count">0</span></div>
+      <div style="display:flex;gap:8px">
+        <button class="chip" id="sort-price">Trier par prix</button>
+        <button class="chip" id="clear-filters">Réinitialiser</button>
+      </div>
+    </div>
+
+    <!-- PRODUCTS GRID -->
+    <main>
+      <div id="grid-produits" class="product-grid" aria-live="polite"></div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      © 2025 Lumora ~ Profitez de la livraison gratuite au Burkina Faso !
+    </footer>
+
+  </div>
+
+  <!-- MODALS -->
+  <!-- Cart Modal -->
+  <div id="cart-modal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <h3>Panier</h3>
+        <div>
+          <button class="close" data-close="cart-modal">✖</button>
+        </div>
+      </div>
+      <div id="cart-items" class="cart-list"></div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px">
+        <strong>Total : <span id="cart-total">0 FCFA</span></strong>
+        <div style="display:flex;gap:8px">
+          <button class="chip" id="clear-cart">Vider</button>
+          <button class="chip" id="checkout">Commander (WhatsApp)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Favs Modal -->
+  <div id="favs-modal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <h3>Favoris</h3>
+        <div>
+          <button class="close" data-close="favs-modal">✖</button>
+        </div>
+      </div>
+      <div id="fav-items" class="cart-list"></div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="nav prev" id="lb-prev">‹</button>
+    <img id="lb-img" src="" alt="Agrandissement">
+    <button class="nav next" id="lb-next">›</button>
+    <button class="close-lb" id="lb-close">✖</button>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast">Message</div>
+
+  <!-- SCRIPTS -->
+  <script>
+    /*****************************************
+     * CONFIG
+     *****************************************/
+    const NUMERO_WHATSAPP = "22670619396";
+
+    // Produits (tu peux éditer ici facilement)
+    const produits = [
+      { id:1, nom: "Gourde Mixeur Portable", prix: 4500, cat:"gourde", image:"https://i.postimg.cc/HkFyXvjq/Gemini-Generated-Image-fbysrwfbysrwfbys.png" },
+      { id:2, nom: "Gourde Thermos Intelligente", prix: 5000, cat:"gourde", image:"https://i.postimg.cc/RFgCQqXt/Gemini-Generated-Image-fbh6adfbh6adfbh6.png" },
+      { id:3, nom: "Écouteurs sans fil (AirPods)", prix: 6500, cat:"audio", image:"https://i.postimg.cc/Z5zxrQGS/Gemini-Generated-Image-do7btcdo7btcdo7b.png" },
+      { id:4, nom: "Porte Ordinateur (Ventilé)", prix: 14500, cat:"pc", image:"https://i.postimg.cc/4NrMMZ0R/Gemini-Generated-Image-t5a89xt5a89xt5a8.png" },
+      { id:5, nom: "Smart Scalp Massager", prix: 8000, cat:"bem", image:"https://i.postimg.cc/hvxDFMKQ/Gemini-Generated-Image-vq1rcfvq1rcfvq1r.png" },
+     
+      { id:6, nom: "Socle pour téléphone (360°)", prix: 4000, cat:"autre", image:"https://i.postimg.cc/qqZ8YJMN/Gemini-Generated-Image-nf9zxjnf9zxjnf9z.png" },
+      { id:7, nom: "Lumière Pro", prix:7000, cat:"autre", image:"https://i.postimg.cc/BvYT1vY4/Gemini-Generated-Image-4569n24569n24569.png" },
+      { id:8, nom: "Éclat Pro", prix:9500, cat:"autre", image:"https://i.postimg.cc/LXkmbJrv/Gemini-Generated-Image-fmp4h4fmp4h4fmp4.png" },
+      { id:9, nom:"Bouilloire chauffante électrique", prix:12500, cat:"autre", image:"https://i.postimg.cc/rFrfX5hq/Gemini-Generated-Image-7yfrky7yfrky7yfr.png" }
+    ];
+
+    /*****************************************
+     * STATE & STORAGE
+     *****************************************/
+    const LS_CART = 'lumora_cart_v1';
+    const LS_FAVS = 'lumora_favs_v1';
+    let state = {
+      cart: JSON.parse(localStorage.getItem(LS_CART) || '[]'),
+      favs: JSON.parse(localStorage.getItem(LS_FAVS) || '[]'),
+      filter: 'all',
+      query: '',
+      sortedByPrice: false,
+      slideIndex:0
+    };
+
+    /*****************************************
+     * UTIL
+     *****************************************/
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    function formatPrice(n){ return new Intl.NumberFormat('fr-FR').format(n) + ' FCFA' }
+    function saveState(){ localStorage.setItem(LS_CART, JSON.stringify(state.cart)); localStorage.setItem(LS_FAVS, JSON.stringify(state.favs)); updateBadges(); }
+    function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=> t.classList.remove('show'),2200) }
+
+    /*****************************************
+     * RENDU PRODUITS
+     *****************************************/
+    const grid = $('#grid-produits');
+    const resultCount = $('#result-count');
+
+    function getFilteredProducts(){
+      let list = produits.slice();
+      if(state.filter !== 'all') list = list.filter(p=>p.cat===state.filter);
+      if(state.query) list = list.filter(p => p.nom.toLowerCase().includes(state.query.toLowerCase()));
+      if(state.sortedByPrice) list.sort((a,b)=>a.prix-b.prix);
+      return list;
+    }
+
+    function renderProducts(){
+      const list = getFilteredProducts();
+      grid.innerHTML = '';
+      resultCount.textContent = list.length;
+      list.forEach((p, idx) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-image" data-id="${p.id}">
+            <img src="${p.image}" alt="${p.nom}">
+          </div>
+          <div class="card-body">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div class="product-title">${p.nom}</div>
+                <div class="product-price">${formatPrice(p.prix)}</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+                <button class="fav-btn" data-id="${p.id}" title="Ajouter aux favoris">${state.favs.includes(p.id) ? '💖' : '🤍'}</button>
+                <button class="btn btn-quick" data-id="${p.id}" title="Ajouter au panier">Ajouter</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:6px">
+              <a class="btn btn-whatsapp" href="${genWhatsAppLink(p)}" target="_blank">Commander</a>
+              <button class="btn btn-quick view-btn" data-id="${p.id}">Voir</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+
+        // image click opens lightbox
+        const imgEl = card.querySelector('.card-image img');
+        imgEl.addEventListener('click', ()=> openLightboxForId(p.id));
+      });
+
+      // attach listeners for add to cart & fav & view
+      $$('.btn-quick').forEach(b=>{
+        b.onclick = ()=> {
+          const id = Number(b.dataset.id);
+          addToCart(id);
+        }
+      });
+      $$('.fav-btn').forEach(b=>{
+        b.onclick = ()=> {
+          const id = Number(b.dataset.id);
+          toggleFav(id);
+          renderProducts(); // re-render to update heart
+        }
+      });
+      $$('.view-btn').forEach(b=>{
+        b.onclick = ()=> {
+          const id = Number(b.dataset.id);
+          openLightboxForId(id);
+        }
+      });
+    }
+
+    /*****************************************
+     * CART (localStorage)
+     *****************************************/
+    function addToCart(id, qty=1){
+      const item = state.cart.find(x=>x.id===id);
+      if(item){ item.qty += qty; }
+      else state.cart.push({id, qty});
+      saveState();
+      updateCartCount();
+      toast('Ajouté au panier');
+      renderCartItems();
+    }
+
+    function removeFromCart(id){
+      state.cart = state.cart.filter(i=>i.id!==id);
+      saveState();
+      renderCartItems();
+      updateCartCount();
+    }
+
+    function changeQty(id, delta){
+      const it = state.cart.find(i=>i.id===id);
+      if(!it) return;
+      it.qty = Math.max(1, it.qty + delta);
+      saveState(); renderCartItems(); updateCartCount();
+    }
+
+    function cartTotal(){
+      return state.cart.reduce((s,it)=>{
+        const prod = produits.find(p=>p.id===it.id);
+        return s + (prod ? prod.prix * it.qty : 0);
+      },0);
+    }
+
+    function updateCartCount(){
+      $('#cart-count').textContent = state.cart.reduce((s,i)=>s+i.qty,0);
+      $('#cart-total').textContent = formatPrice(cartTotal());
+    }
+
+    function renderCartItems(){
+      const listEl = $('#cart-items');
+      listEl.innerHTML = '';
+      if(state.cart.length===0){ listEl.innerHTML = '<div style="padding:18px;color:#666">Panier vide</div>'; return }
+      state.cart.forEach(it=>{
+        const p = produits.find(x=>x.id===it.id);
+        if(!p) return;
+        const div = document.createElement('div');
+        div.className='cart-item';
+        div.innerHTML = `
+          <img src="${p.image}" alt="${p.nom}">
+          <div style="flex:1">
+            <div style="font-weight:700">${p.nom}</div>
+            <div style="color:#666">${formatPrice(p.prix)} x ${it.qty}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <button class="chip" data-action="plus" data-id="${p.id}">+</button>
+            <button class="chip" data-action="minus" data-id="${p.id}">-</button>
+            <button class="chip" data-action="remove" data-id="${p.id}">Supprimer</button>
+          </div>
+        `;
+        listEl.appendChild(div);
+      });
+
+      // attach
+      listEl.querySelectorAll('[data-action]').forEach(b=>{
+        b.onclick = (e)=>{
+          const act = b.dataset.action; const id = Number(b.dataset.id);
+          if(act==='plus') changeQty(id, 1);
+          if(act==='minus') changeQty(id, -1);
+          if(act==='remove') removeFromCart(id);
+        }
+      });
+    }
+
+    /*****************************************
+     * FAVORIS (localStorage)
+     *****************************************/
+    function toggleFav(id){
+      if(state.favs.includes(id)) state.favs = state.favs.filter(x=>x!==id);
+      else state.favs.push(id);
+      saveState();
+      renderFavItems();
+      $('#fav-count').textContent = state.favs.length;
+    }
+
+    function renderFavItems(){
+      const el = $('#fav-items');
+      el.innerHTML = '';
+      if(state.favs.length===0){ el.innerHTML = '<div style="padding:18px;color:#666">Aucun favori</div>'; return }
+      state.favs.forEach(id=>{
+        const p = produits.find(x=>x.id===id);
+        if(!p) return;
+        const node = document.createElement('div');
+        node.className='cart-item';
+        node.innerHTML = `
+          <img src="${p.image}" alt="${p.nom}">
+          <div style="flex:1">
+            <div style="font-weight:700">${p.nom}</div>
+            <div style="color:#666">${formatPrice(p.prix)}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="chip" data-add="${p.id}">Ajouter au panier</button>
+            <button class="chip" data-remove="${p.id}">Retirer</button>
+          </div>
+        `;
+        el.appendChild(node);
+      });
+
+      el.querySelectorAll('[data-add]').forEach(b=>{
+        b.onclick = ()=> { addToCart(Number(b.dataset.add)); }
+      });
+      el.querySelectorAll('[data-remove]').forEach(b=>{
+        b.onclick = ()=> { toggleFav(Number(b.dataset.remove)); renderProducts(); }
+      });
+    }
+
+    /*****************************************
+     * LIGHTBOX
+     *****************************************/
+    const lightbox = $('#lightbox');
+    const lbimg = $('#lb-img');
+    let lbIndex = 0;
+
+    function openLightboxForId(id){
+      const idx = produits.findIndex(p=>p.id===id);
+      if(idx<0) return;
+      lbIndex = idx;
+      showLB();
+    }
+
+    function showLB(){
+      const p = produits[lbIndex];
+      lbimg.src = p.image;
+      lightbox.classList.add('active');
+    }
+    $('#lb-close').onclick = ()=> lightbox.classList.remove('active');
+    $('#lb-prev').onclick = ()=> { lbIndex = (lbIndex-1 + produits.length)%produits.length; showLB(); }
+    $('#lb-next').onclick = ()=> { lbIndex = (lbIndex+1)%produits.length; showLB(); }
+    lightbox.onclick = (e)=> { if(e.target === lightbox) lightbox.classList.remove('active') }
+
+    /*****************************************
+     * SLIDER (auto + controls)
+     *****************************************/
+    const slidesEl = $('#slides');
+    const slideCount = slidesEl.children.length;
+    function showSlide(i){
+      state.slideIndex = (i+slideCount)%slideCount;
+      slidesEl.style.transform = `translateX(-${state.slideIndex * 100}%)`;
+    }
+    $('#prev-slide').onclick = ()=> showSlide(state.slideIndex-1);
+    $('#next-slide').onclick = ()=> showSlide(state.slideIndex+1);
+    setInterval(()=> showSlide(state.slideIndex+1), 6000);
+
+    /*****************************************
+     * SEARCH / FILTERS / SORT
+     *****************************************/
+    $('#search').addEventListener('input', (e)=>{
+      state.query = e.target.value.trim();
+      renderProducts();
+    });
+
+    $$('#filters .chip').forEach(ch=>{
+      ch.onclick = ()=> {
+        $$('#filters .chip').forEach(c=>c.classList.remove('active'));
+        ch.classList.add('active');
+        state.filter = ch.dataset.cat;
+        renderProducts();
+      }
+    });
+
+    $('#sort-price').onclick = ()=>{
+      state.sortedByPrice = !state.sortedByPrice;
+      $('#sort-price').textContent = state.sortedByPrice ? 'Prix : bas→haut' : 'Trier par prix';
+      renderProducts();
+    };
+
+    $('#clear-filters').onclick = ()=>{
+      state.filter='all'; state.query=''; state.sortedByPrice=false;
+      $('#search').value=''; $$('#filters .chip').forEach(c=>c.classList.remove('active'));
+      $$('#filters .chip')[0].classList.add('active');
+      $('#sort-price').textContent = 'Trier par prix';
+      renderProducts();
+    };
+
+    /*****************************************
+     * CART / FAV MODALS
+     *****************************************/
+    $('#open-cart').onclick = ()=> { $('#cart-modal').classList.add('active'); renderCartItems(); $('#cart-modal').setAttribute('aria-hidden','false') }
+    $('#open-favs').onclick = ()=> { $('#favs-modal').classList.add('active'); renderFavItems(); $('#favs-modal').setAttribute('aria-hidden','false') }
+    $$('.close').forEach(b=> b.onclick = ()=> {
+      const target = b.dataset.close;
+      if(target) $('#'+target).classList.remove('active');
+      else b.closest('.modal').classList.remove('active');
+    });
+    $('#clear-cart').onclick = ()=> { state.cart = []; saveState(); renderCartItems(); updateCartCount(); toast('Panier vidé'); }
+    $('#checkout').onclick = ()=> {
+      if(state.cart.length===0){ toast('Votre panier est vide'); return }
+      // build message
+      const lines = state.cart.map(it=> {
+        const p = produits.find(x=>x.id===it.id);
+        return `${p.nom} x${it.qty} (${formatPrice(p.prix*it.qty)})`;
+      });
+      const total = formatPrice(cartTotal());
+      const msg = `Bonjour, je souhaite commander :%0A${lines.join('%0A')}%0ATotal : ${total}`;
+      const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${msg}`;
+      // open whatsapp
+      window.open(url,'_blank');
+    };
+
+    /*****************************************
+     * THEME TOGGLE
+     *****************************************/
+    $('#toggle-theme').onclick = ()=>{
+      document.body.classList.toggle('dark');
+      $('#toggle-theme').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    };
+
+    /*****************************************
+     * BADGES & INIT
+     *****************************************/
+    function updateBadges(){
+      $('#fav-count').textContent = state.favs.length;
+      $('#cart-count').textContent = state.cart.reduce((s,i)=>s+i.qty,0);
+      $('#cart-total').textContent = formatPrice(cartTotal());
+    }
+
+    // WhatsApp link for quick order of a single product
+    function genWhatsAppLink(p){
+      const msg = `Bonjour, je suis intéressé par : ${p.nom} au prix de ${formatPrice(p.prix)}.`;
+      return `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(msg)}`;
+    }
+
+    // initial render
+    renderProducts();
+    updateBadges();
+    renderCartItems();
+    renderFavItems();
+
+    // attach clicks for dynamic parts after first render
+    // (add event delegation for card image clicks)
+    grid.addEventListener('click', (e)=>{
+      const cardImg = e.target.closest('.card-image');
+      if(cardImg){
+        const id = Number(cardImg.dataset.id || cardImg.querySelector('img')?.dataset?.id);
+        // fallback: find product by src
+      }
+    });
+
+    // small accessibility: close modals with Esc
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='Escape'){
+        $$('.modal').forEach(m=>m.classList.remove('active'));
+        lightbox.classList.remove('active');
+      }
+    });
+
+    // ensure save on unload
+    window.addEventListener('beforeunload', saveState);
+  </script>
+</body>
+</html>
