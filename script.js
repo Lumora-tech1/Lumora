@@ -4,16 +4,28 @@
 const NUMERO_WHATSAPP = "22670619396"; // ton numéro
 
 const produits = [
-  { id:1, nom:"Gourde Mixeur Portable", prix:4500, cat:"gourde", image:"https://i.postimg.cc/HkFyXvjq/Gemini-Generated-Image-fbysrwfbysrwfbys.png" },
-  { id:2, nom:"Gourde Thermos Intelligente", prix:5000, cat:"gourde", image:"https://i.postimg.cc/RFgCQqXt/Gemini-Generated-Image-fbh6adfbh6adfbh6.png" },
-  { id:3, nom:"Écouteurs sans fil (AirPods)", prix:6500, cat:"audio", image:"https://i.postimg.cc/Z5zxrQGS/Gemini-Generated-Image-do7btcdo7btcdo7b.png" },
-  { id:4, nom:"Porte Ordinateur (Ventilé)", prix:14500, cat:"pc", image:"https://i.postimg.cc/4NrMMZ0R/Gemini-Generated-Image-t5a89xt5a89xt5a8.png" },
-  { id:5, nom:"Smart Scalp Massager", prix:8000, cat:"bem", image:"https://i.postimg.cc/hvxDFMKQ/Gemini-Generated-Image-vq1rcfvq1rcfvq1r.png" },
-  { id:6, nom:"Massage Stick Pro", prix:7000, cat:"bem", image:"https://i.postimg.cc/SRmTqxhv/Gemini-Generated-Image-o5z450o5z450o5z4.png" },
-  { id:7, nom:"Socle pour téléphone (360°)", prix:4000, cat:"autre", image:"https://i.postimg.cc/qqZ8YJMN/Gemini-Generated-Image-nf9zxjnf9zxjnf9z.png" },
-  { id:8, nom:"Lumière Pro", prix:7000, cat:"autre", image:"https://i.postimg.cc/BvYT1vY4/Gemini-Generated-Image-4569n24569n24569.png" },
-  { id:9, nom:"Éclat Pro", prix:9500, cat:"autre", image:"https://i.postimg.cc/LXkmbJrv/Gemini-Generated-Image-fmp4h4fmp4h4fmp4.png" },
-  { id:10, nom:"Bouilloire chauffante électrique", prix:12500, cat:"autre", image:"https://i.postimg.cc/rFrfX5hq/Gemini-Generated-Image-7yfrky7yfrky7yfr.png" }
+  { id:1, nom: "Gourde Mixeur Portable", prix: 4500, cat:"gourde", image:"https://i.postimg.cc/HkFyXvjq/Gemini-Generated-Image-fbysrwfbysrwfbys.png" },
+  { id:2, nom: "Gourde Thermos Intelligente", prix: 5000, cat:"gourde", image:"https://i.postimg.cc/RFgCQqXt/Gemini-Generated-Image-fbh6adfbh6adfbh6.png" },
+  { id:3, nom: "Écouteurs Sans Fil (AirPods)", prix: 6500, cat:"audio", image:"https://i.postimg.cc/Z5zxrQGS/Gemini-Generated-Image-do7btcdo7btcdo7b.png" },
+  { id:4, nom: "Porte Ordinateur (Ventilé)", prix: 14500, cat:"pc", image:"https://i.postimg.cc/4NrMMZ0R/Gemini-Generated-Image-t5a89xt5a89xt5a8.png" },
+  { id:5, nom: "Smart Scalp Massager", prix: 8000, cat:"bem", image:"https://i.postimg.cc/hvxDFMKQ/Gemini-Generated-Image-vq1rcfvq1rcfvq1r.png" },
+  { id:6, nom: "Massage Stick Pro", prix: 7000, cat:"bem", image:"https://i.postimg.cc/SRmTqxhv/Gemini-Generated-Image-o5z450o5z450o5z4.png" },
+  { id:7, nom: "Socle pour téléphone (360°)", prix: 4000, cat:"autre", image:"https://i.postimg.cc/qqZ8YJMN/Gemini-Generated-Image-nf9zxjnf9zxjnf9z.png" },
+  { id:8, nom: "Lumière Pro", prix: 7000, cat:"autre", image:"https://i.postimg.cc/BvYT1vY4/Gemini-Generated-Image-4569n24569n24569.png" },
+  { id:9, nom: "Éclat Pro", prix: 9500, cat:"autre", image:"https://i.postimg.cc/LXkmbJrv/Gemini-Generated-Image-fmp4h4fmp4h4fmp4.png" },
+  { id: 10, nom: "Bouilloire chauffante électrique", prix: 12500, cat:"autre", image:"https://i.postimg.cc/rFrfX5hq/Gemini-Generated-Image-7yfrky7yfrky7yfr.png" },
+  { id: 11, nom: "Tondeuse SONAR 3-en-1", prix: 8500, cat:"autre", image:"https://i.postimg.cc/prg7N8m7/Gemini-Generated-Image-5g3xxc5g3xxc5g3x.png" },
+  { id: 12, nom: "Perceuse Sans Fil avec Coffret", prix: 14500, cat:"autre", image:"https://i.postimg.cc/3rvQ1J0R/Gemini-Generated-Image-hhjj4ihhjj4ihhjj.png" },
+  { id: 13, nom: "Planche de Pompes Pliable", prix: 9000, cat:"sport", image:"https://i.postimg.cc/cLJDDXkk/Gemini-Generated-Image-5d0prs5d0prs5d0p.png" },
+  { id: 14, nom: "Sèche-Cheveux POREE", prix: 11500, cat:"bem", image:"https://i.postimg.cc/zG2yPhrC/Gemini-Generated-Image-kojvifkojvifkojv.png" },
+  { id: 15, nom: "Aspirateur SOKANY", prix: 39000, cat:"maison", image:"https://i.postimg.cc/vHT9kkMZ/Gemini-Generated-Image-8r12n58r12n58r12.png" },
+  { id: 16, nom: "Mini Ventilateur Portable", prix: 2000, cat:"bem", image:"https://i.postimg.cc/sf6GYmSx/Gemini-Generated-Image-v8hv8v8hv8v8hv8v.png" },
+  { id: 17, nom: "Presse-Agrumes SILVER LOVE", prix: 6500, cat:"cuisine", image:"https://i.postimg.cc/fR4LCrbn/Gemini-Generated-Image-k30ae0k30ae0k30a.png" },
+  { id: 18, nom: "Tondeuse Daling Sans Fil", prix: 7500, cat:"autre", image:"https://i.postimg.cc/QN9Kq5qj/Gemini-Generated-Image-agnus9agnus9agnu.png" },
+  { id: 19, nom: "Ultra Série 3", prix: 11500, cat:"autre", image:"https://i.postimg.cc/fT7LHvSD/Gemini-Generated-Image-9nxfzh9nxfzh9nxf.png" },
+   { id: 20, nom: "Ventilateur de Bureau", prix: 5500, cat:"bem", image:"https://i.postimg.cc/L8KP5VG0/Gemini-Generated-Image-mptnszmptnszmptn.png" },
+  { id: 21, nom: "Kit Karaoké Sans Fil | 2 Micros", prix: 4000, cat:"autre", image:"https://i.postimg.cc/Jh7W599H/Gemini-Generated-Image-nj1wgznj1wgznj1w.png" },
+  { id: 22, nom: "Ventilateur Humidificateur LED", prix: 5500, cat:"bem", image:"https://i.postimg.cc/W3wVms4p/Gemini-Generated-Image-z8h7k1z8h7k1z8h7.png" }
 ];
 
 /*****************************************
