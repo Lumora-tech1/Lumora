@@ -24,7 +24,7 @@ const produits = [
   { id: 18, nom: "Tondeuse Daling Sans Fil", prix: 7500, cat:"autre", image:"https://i.postimg.cc/QN9Kq5qj/Gemini-Generated-Image-agnus9agnus9agnu.png" },
   { id: 19, nom: "Ultra Série 3", prix: 11500, cat:"autre", image:"https://i.postimg.cc/fT7LHvSD/Gemini-Generated-Image-9nxfzh9nxfzh9nxf.png" },
    { id: 20, nom: "Ventilateur de Bureau", prix: 5500, cat:"bem", image:"https://i.postimg.cc/L8KP5VG0/Gemini-Generated-Image-mptnszmptnszmptn.png" },
-  { id: 21, nom: "Kit Karaoké Sans Fil | 2 Micros", prix: 4000, cat:"autre", image:"https://i.postimg.cc/Jh7W599H/Gemini-Generated-Image-nj1wgznj1wgznj1w.png" },
+  { id: 21, nom: "Kit Karaoké Sans Fil | 2 Micros", prix: 4000, cat:"audio", image:"https://i.postimg.cc/Jh7W599H/Gemini-Generated-Image-nj1wgznj1wgznj1w.png" },
   { id: 22, nom: "Ventilateur Humidificateur LED", prix: 5500, cat:"bem", image:"https://i.postimg.cc/W3wVms4p/Gemini-Generated-Image-z8h7k1z8h7k1z8h7.png" }
 ];
 
